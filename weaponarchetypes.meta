@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CWeaponModelInfo__InitDataList>
+	<InitDatas>
+		<Item>
+			<modelName>W_EX_Shoe</modelName>
+			<txdName>W_EX_Shoe</txdName>
+			<ptfxAssetName>null</ptfxAssetName>
+			<lodDist value="50"/>
+		</Item>	
+	</InitDatas>
+</CWeaponModelInfo__InitDataList>
