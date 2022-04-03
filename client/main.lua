@@ -36,8 +36,8 @@ end)
 RegisterNetEvent('tnj-stealshoes:client:StoleShoe', function(playerId)
     local ped = PlayerPedId()
     local hasShoes = GetPedDrawableVariation(ped, 6)
-    if hasShoes ~= 45 then
-        SetPedComponentVariation(ped, 6, 45, 0, 2)
+    if hasShoes ~= 34 then
+        SetPedComponentVariation(ped, 6, 34, 0, 2)
         QBCore.Functions.Notify("Shoes got robbed lmao", 'primary')
         TriggerServerEvent("tnj-stealshoes:server:Complete", playerId)
     else
