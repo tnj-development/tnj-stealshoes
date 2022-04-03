@@ -13,14 +13,14 @@ RegisterNetEvent('tnj-stealshoes:client:TheftShoe', function() -- This could be 
             if not IsPedInAnyVehicle(GetPlayerPed(player)) and not IsPedInAnyVehicle(ped) then
                 local oped = GetPlayerPed(player)
                 local hasShoes = GetPedDrawableVariation(oped, 6)
-                if hasShoes ~= 45 then
+                if hasShoes ~= 34 then
                     while not HasAnimDictLoaded("random@domestic") do
                         RequestAnimDict("random@domestic")
                         Wait(1)
                     end
                     TaskPlayAnim(ped, "random@domestic", "pickup_low", 8.00, -8.00, 500, 0, 0.00, 0, 0, 0)
                     TriggerServerEvent("tnj-stealshoes:server:TheftShoe", playerId)
-                    SetPedComponentVariation(oped, 6, 45, 0, 2)
+                    SetPedComponentVariation(oped, 6, 34, 0, 2)
                 else
                     QBCore.Functions.Notify("No shoes to been stolen!", "error")
                 end
