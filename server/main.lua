@@ -18,3 +18,9 @@ RegisterNetEvent("tnj-stealshoes:server:Complete", function(playerId)
         TriggerClientEvent('inventory:client:ItemBox', Receiver.PlayerData.source, QBCore.Shared.Items["weapon_shoe"], 'add')
     end
 end)
+
+QBCore.Functions.CreateCallback('shoes:server:isPlayerDead', function(_, cb, playerId)
+    local Player = QBCore.Functions.GetPlayer(playerId)
+    local status = Player.PlayerData.metadata["isdead"] or Player.PlayerData.metadata["inlaststand"]
+    cb(status)
+end)
