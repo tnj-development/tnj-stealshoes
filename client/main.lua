@@ -4,28 +4,65 @@ RegisterCommand("stealshoes", function()
     TriggerEvent('tnj-stealshoes:client:TheftShoe')
 end)
 
+local function IsTargetDead(playerId)
+    local retval = false
+    local hasReturned = false
+    QBCore.Functions.TriggerCallback('shoes:server:isPlayerDead', function(result)
+        retval = result
+        hasReturned = true
+    end, playerId)
+    while not hasReturned do
+      Wait(10)
+    end
+    return retval
+end
+
 RegisterNetEvent('tnj-stealshoes:client:TheftShoe', function() -- This could be used in the radialmenu ;)
     local ped = PlayerPedId()
     if not IsPedRagdoll(ped) then
         local player, distance = QBCore.Functions.GetClosestPlayer()
         if player ~= -1 and distance < 1.5 then
             local playerId = GetPlayerServerId(player)
-            if not IsPedInAnyVehicle(GetPlayerPed(player)) and not IsPedInAnyVehicle(ped) then
-                local oped = GetPlayerPed(player)
-                local hasShoes = GetPedDrawableVariation(oped, 6)
-                if hasShoes ~= 34 then
-                    while not HasAnimDictLoaded("random@domestic") do
-                        RequestAnimDict("random@domestic")
-                        Wait(1)
+            if Config.Down then
+                if IsTargetDead(playerId) then
+                    if not IsPedInAnyVehicle(GetPlayerPed(player)) and not IsPedInAnyVehicle(ped) then
+                        local oped = GetPlayerPed(player)
+                        local hasShoes = GetPedDrawableVariation(oped, 6)
+                        if hasShoes ~= 34 then
+                            while not HasAnimDictLoaded("random@domestic") do
+                                RequestAnimDict("random@domestic")
+                                Wait(1)
+                            end
+                            TaskPlayAnim(ped, "random@domestic", "pickup_low", 8.00, -8.00, 500, 0, 0.00, 0, 0, 0)
+                            TriggerServerEvent("tnj-stealshoes:server:TheftShoe", playerId)
+                            SetPedComponentVariation(oped, 6, 34, 0, 2)
+                        else
+                            QBCore.Functions.Notify("No shoes to been stolen!", "error")
+                        end
+                    else
+                        QBCore.Functions.Notify('You can\'t steal shoes in vehicle', "error")
                     end
-                    TaskPlayAnim(ped, "random@domestic", "pickup_low", 8.00, -8.00, 500, 0, 0.00, 0, 0, 0)
-                    TriggerServerEvent("tnj-stealshoes:server:TheftShoe", playerId)
-                    SetPedComponentVariation(oped, 6, 34, 0, 2)
                 else
-                    QBCore.Functions.Notify("No shoes to been stolen!", "error")
+                    QBCore.Functions.Notify('They are not down!', "error")
                 end
             else
-                QBCore.Functions.Notify('You can\'t steal shoes in vehicle', "error")
+                if not IsPedInAnyVehicle(GetPlayerPed(player)) and not IsPedInAnyVehicle(ped) then
+                    local oped = GetPlayerPed(player)
+                    local hasShoes = GetPedDrawableVariation(oped, 6)
+                    if hasShoes ~= 34 then
+                        while not HasAnimDictLoaded("random@domestic") do
+                            RequestAnimDict("random@domestic")
+                            Wait(1)
+                        end
+                        TaskPlayAnim(ped, "random@domestic", "pickup_low", 8.00, -8.00, 500, 0, 0.00, 0, 0, 0)
+                        TriggerServerEvent("tnj-stealshoes:server:TheftShoe", playerId)
+                        SetPedComponentVariation(oped, 6, 34, 0, 2)
+                    else
+                        QBCore.Functions.Notify("No shoes to been stolen!", "error")
+                    end
+                else
+                    QBCore.Functions.Notify('You can\'t steal shoes in vehicle', "error")
+                end
             end
         else
             QBCore.Functions.Notify('No one nearby!', "error")
